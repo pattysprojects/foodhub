@@ -1,0 +1,48 @@
+package com.webapp.foodhub.client;
+
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.Style;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.ScrollPanel;
+
+public class ResizeController {
+	
+	private static ResizeController controller;
+	private double browserHeight;
+	
+	private ResizeController() {
+		browserHeight = Window.getClientHeight();
+	}
+	
+	public static ResizeController getInstance() {
+		if (controller == null) {
+			controller = new ResizeController();
+		}
+		return controller;
+	}
+	
+	public void setExploreResultsHeight() {
+		Element scrollPanel = Document.get().getElementById("scrollPanel");
+		Element exploreButton = Document.get().getElementById("explore_input");
+		double buttonBottom = exploreButton.getAbsoluteTop() + exploreButton.getClientHeight() + 50;
+		scrollPanel.getStyle().setHeight((browserHeight - buttonBottom), Style.Unit.PX);
+	}
+	
+	public void setSearchResultsHeight() {
+		Element scrollPanel = Document.get().getElementById("scrollPanel");
+		Element searchButton = Document.get().getElementById("search_input_query");
+		double buttonBottom = searchButton.getAbsoluteTop() + searchButton.getClientHeight() + 50;
+		scrollPanel.getStyle().setHeight((browserHeight - buttonBottom), Style.Unit.PX);
+	}
+	
+	public void setDirectionsPanelHeight(Element directions_panel) {
+		double panelTop = Document.get().getElementById("options_container").getAbsoluteTop() + 70;
+		directions_panel.getStyle().setHeight((browserHeight - panelTop), Style.Unit.PX);
+	}
+	
+	public void adjustExploreView() {
+		setExploreResultsHeight
+	}
+
+}

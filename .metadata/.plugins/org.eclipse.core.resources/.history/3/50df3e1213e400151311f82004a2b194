@@ -1,0 +1,13 @@
+package com.webapp.foodhub.client;
+
+public class FoodHubSearcher {
+	
+	// Default values for HTTP request unless otherwise specified by user
+	private String near = "Vancouver";
+	private String query = "Urban Tea Merchant";
+	
+	public FoodHubSearcher(String near, String query) {
+		
+	}
+
+}

@@ -1,0 +1,127 @@
+package com.webapp.foodhub.client;
+
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.Style.Display;
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.RequestException;
+import com.google.gwt.http.client.Response;
+import com.google.gwt.user.client.Window;
+
+public class DataFetcher {
+	
+	// FourSquare client ID, client secret and category ID for Food
+	
+	private static final String client_id = "3Q4JJMLCK5REAI0BB0ITWNMOHQJ5OZOOXMXNJ3FWKY22FLJR";
+	private static final String client_secret = "411OCSM44KF3UJD2OK3B3AD4MY1VKSBMH4LFDFQCHFHMZLKJ";
+	private static final String category = "4d4b7105d754a06374d81259";
+	
+	// URL for HTTP request to FourSquare API
+	private String url = "https://api.foursquare.com/v2/venues/";
+	private String v = "20151221";
+	private String m = "foursquare";
+	
+	private String parameters;
+	private RequestBuilder builder;
+	private String location = "Vancouver";
+	private String searchTerm = "Urban Tea Merchant";
+	
+	private DataParser parser;
+	private DataDrawer drawer;
+	private FoodHubVenue[] venues;
+	private MapController controller;
+	
+	public DataFetcher(String near) {
+		this.location = near;
+	}
+	
+	public DataFetcher(String near, String query) {
+		this.location = near;
+		this.searchTerm = query;
+	}
+	
+	public void fetchExploreData() {
+		this.resetParameters();
+		parameters = parameters + "&near=" + this.location + "&section=food";
+		builder = new RequestBuilder(RequestBuilder.GET, url + "explore?" + parameters);
+	    try {
+	    	builder.sendRequest(null, new RequestCallback() {
+	          public void onError(Request request, Throwable exception) {
+	        	  Window.alert("Error processing request");
+	          }
+
+	          public void onResponseReceived(Request request, Response response) {
+	        	  
+	        	  int status = response.getStatusCode();
+	        	  if (status == Response.SC_OK) {
+	        		  // Parse the JSON response into FoodHubVenue objects
+	        		  parser = new DataParser(response.getText());
+	        		  venues = parser.parseExploreData();
+
+	        		  // Fill the panel table with names + addresses
+	        		  drawer = new DataDrawer(venues);
+	        		  drawer.drawExploreData();
+
+	        		  // Draw markers for each venue on the map
+	        		  controller = MapController.getInstance();
+	        		  controller.drawMarkers(venues);
+	        	  } else {
+	        		  Element explore_warning = Document.get().getElementById("explore_req_warning");
+	        		  String warning = String.valueOf(status) + ": " + response.getStatusText() + ", please try again.";
+	        		  explore_warning.setInnerText(warning);
+	        		  explore_warning.getStyle().setDisplay(Display.INLINE);
+	        	  }
+	          }
+	          
+	        });
+	      } catch (RequestException e) {
+	    	  Window.alert("Request Exception");
+	      }
+	}
+	
+	public void fetchSearchData() {
+		this.resetParameters();
+		parameters = parameters + "&near=" + this.location + "&query=" + this.searchTerm + "&categoryId=" + category;
+		builder = new RequestBuilder(RequestBuilder.GET, url + "search?" + parameters);
+	    try {
+	    	builder.sendRequest(null, new RequestCallback() {
+	          public void onError(Request request, Throwable exception) {
+	        	  Window.alert("Error processing request");
+	          }
+
+	          public void onResponseReceived(Request request, Response response) {
+	        	  
+	        	  int status = response.getStatusCode();
+	        	  if (status == Response.SC_OK) { 
+	        		  // Parse the JSON response into FoodHubVenue objects
+	        		  parser = new DataParser(response.getText());
+	        		  venues = parser.parseSearchData();
+
+	        		  // Fill the panel table with names + addresses
+	        		  drawer = new DataDrawer(venues);
+	        		  drawer.drawSearchData();
+
+	        		  // Draw markers for each venue on the map
+	        		  controller = MapController.getInstance();
+	        		  controller.drawMarkers(venues);
+	        	  } else {
+	        		  Element search_warning = Document.get().getElementById("search_req_warning");
+	        		  String warning = String.valueOf(status) + ": " + response.getStatusText() + ", please try again.";
+	        		  search_warning.setInnerText(warning);
+	        		  search_warning.getStyle().setDisplay(Display.INLINE);
+	        	  }
+	          }
+	          
+	        });
+	      } catch (RequestException e) {
+	    	  Window.alert("Request Exception");
+	      }
+	}
+	
+	public void resetParameters() {
+		parameters = "client_id=" + client_id + "&client_secret=" + client_secret +
+				"&v=" + v + "&m=" + m + "&limit=30";
+	}
+}

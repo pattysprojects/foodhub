@@ -1,0 +1,37 @@
+package com.webapp.foodhub.client;
+
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.Style;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.ScrollPanel;
+
+public class ResizeController {
+	
+	private static ResizeController controller;
+	private double browserHeight;
+	
+	private ResizeController() {
+		browserHeight = Window.getClientHeight();
+	}
+	
+	public static ResizeController getInstance() {
+		if (controller == null) {
+			controller = new ResizeController();
+		}
+		return controller;
+	}
+	
+	public void setExploreResultsHeight(ScrollPanel scrollPanel) {
+		Element exploreButton = Document.get().getElementById("explore_input");
+		double inputBottom = exploreButton.getAbsoluteTop() + exploreButton.getClientHeight() + 50;
+		scrollPanel.getElement().getStyle().setHeight((browserHeight - inputBottom), Style.Unit.PX);
+	}
+	
+	public void setSearchResultsHeight(ScrollPanel scrollPanel) {
+		Element searchInputQuery = Document.get().getElementById("search_input_query");
+		double inputBottom = searchInputQuery.getAbsoluteTop() + searchInputQuery.getClientHeight() + 50;
+		scrollPanel.getElement().getStyle().setHeight((browserHeight - inputBottom), Style.Unit.PX);
+	}
+
+}

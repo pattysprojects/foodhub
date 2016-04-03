@@ -1,0 +1,252 @@
+@font-face {
+  font-family: "Icomoon";
+  src: url("../fonts/icomoon.woff");
+}
+html {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  font-size: 24pt;
+  margin: 0;
+  padding: 0;
+  /** Make vertical scrollbar always visible so when scrollbar appears, won't shift everything left */
+  overflow-y: scroll;
+  display: table;
+  height: 100%;
+  width: 100%;
+}
+
+h1 {
+  font-family: Gisha;
+  color: #000000;
+  word-spacing: 8px;
+  letter-spacing: 5px;
+  position: fixed;
+  z-index: 2;
+  left: 50%;
+  transform: translate(-50%);
+  text-transform: uppercase;
+}
+
+p {
+  text-align: center;
+  font-family: "Gisha";
+}
+
+a {
+  text-decoration: none;
+  color: #000000;
+}
+a:hover {
+  color: #000000;
+}
+
+#main {
+  height: 100%;
+  display: table-row;
+  position: relative;
+  text-align: center;
+}
+#main img {
+  position: absolute;
+  z-index: -1;
+  top: 2%;
+  left: 1%;
+  height: 96%;
+  width: 98%;
+}
+#main #attribution {
+  position: absolute;
+  bottom: 2%;
+  left: 50%;
+  transform: translate(-50%);
+  font-size: 0.6em;
+  line-height: 200%;
+}
+
+#icons {
+  font-family: "Icomoon";
+  font-size: 1em;
+  letter-spacing: 0.3em;
+}
+
+/**
+Have two divs side by side, each taking up half of parent container
+Dividing a container into two vertical halves
+
+@mixin main-options($side) {
+  position: relative;
+  height: 100%;
+  width: 50%;
+  float: $side;
+}
+
+#exploreDiv {
+  @include main-options(left);
+}
+
+#searchDiv {
+  @include main-options(right);
+}
+**/
+#options {
+  position: absolute;
+  top: 47%;
+  transform: translateY(-50%);
+  line-height: 200%;
+  margin: 0;
+  background-color: #f5f5f5;
+  width: 100%;
+  padding: 5% 0;
+  z-index: 1;
+}
+
+#explore_option:hover::before, #search_option:hover::before {
+  font-family: "Icomoon";
+  font-size: 0.8em;
+  content: "a ";
+}
+
+#options_container {
+  display: none;
+  height: 100%;
+  width: 100%;
+}
+
+#header {
+  display: none;
+  margin-top: 1em;
+}
+#header a {
+  font-size: 0.8em;
+  font-family: Arial Narrow;
+  margin-right: 1em;
+  color: #999999;
+}
+#header a.currTab {
+  color: #595959;
+  border-bottom: 2px;
+  border-bottom-style: solid;
+  padding-bottom: 2px;
+}
+#header a:hover {
+  color: #595959;
+  border-bottom: 2px;
+  border-bottom-style: solid;
+  padding-bottom: 2px;
+}
+#header #name_page {
+  color: #595959;
+  font-size: 1em;
+  font-family: Gisha;
+  margin-left: 30px;
+}
+
+/** When a CSS property shows as struck-through, 
+it means that the crossed-out style was applied, 
+but then overridden by a more specific selector, 
+a more local rule, or by a later property within 
+the same rule. The styling below is not as
+specific as the one above so it will be
+overridden.
+
+.currTab {
+  color: $black;
+}**/
+#explore, #search {
+  display: block;
+  height: 90%;
+  width: 100%;
+  margin-top: 30px;
+}
+
+#explore_panel, #search_panel {
+  float: left;
+  height: 100%;
+  width: 23%;
+}
+#explore_panel p, #search_panel p {
+  font-size: 14px;
+  font-family: Arial;
+  text-align: left;
+  margin-left: 10%;
+}
+
+#explore_input, #search_input_near, #search_input_query {
+  padding: 2.5%;
+  font-size: 50%;
+  width: 55%;
+  min-width: 120px;
+  margin-left: 10%;
+}
+
+#search_input_query {
+  margin-top: 1em;
+}
+
+.query_button {
+  width: 25%;
+  min-width: 70px;
+  font-size: 50%;
+  padding: 2.5%;
+}
+
+#explore_near_warning, #search_near_warning,
+#query_warning, #search_req_warning, #explore_req_warning {
+  display: none;
+  font-size: 14px;
+  color: #993333;
+}
+
+#scrollPanel {
+  margin-top: 20px;
+}
+
+#results_table {
+  margin-left: 10%;
+  font-size: 50%;
+  font-family: Gisha;
+  color: #666666;
+}
+
+.restaurant_name {
+  font-size: 105%;
+}
+
+.directions_link {
+  color: #666666;
+}
+
+#textbox {
+  padding: 5pt;
+  width: 85%;
+  margin: 5pt 0;
+  font-family: Gisha;
+  font-size: 102%;
+}
+
+#explore_map, #search_map {
+  width: 50%;
+  float: left;
+  margin: 1% 0.5% 1% 1%;
+}
+
+#explore_dir_panel, #search_dir_panel {
+  float: left;
+  width: 24%;
+  margin: 1% 1% 0 0;
+  font-size: 10pt;
+  overflow: auto;
+}
+#explore_dir_panel div.adp, #search_dir_panel div.adp {
+  padding: 0pt 10pt 10pt 10pt;
+  font-family: Gisha;
+  font-size: 110%;
+}
+#explore_dir_panel div.adp .adp-placemark, #search_dir_panel div.adp .adp-placemark {
+  margin-top: 2px;
+}
+
+/*# sourceMappingURL=style.css.map */

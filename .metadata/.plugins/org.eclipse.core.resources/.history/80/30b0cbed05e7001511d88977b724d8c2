@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>food hub</title>
+    <link type="text/css" rel="stylesheet" href="style.css">
+	<link rel="icon" type="image/x-icon" href="icon.ico">
+	
+	<!-- INCLUDE JQUERY LIBRARY FROM GOOGLE CDN -->
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  </head>
+  
+  <body>
+    <!-- OPTIONAL: include this if you want history support -->
+    <iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1' style="position:absolute;width:0;height:0;border:0"></iframe>
+    
+    <!-- RECOMMENDED if your web app will not function without JavaScript enabled -->
+    <noscript>
+      <div style="width: 22em; position: absolute; left: 50%; margin-left: -11em; color: red; background-color: white; border: 1px solid red; padding: 4px; font-family: sans-serif">
+        Your web browser must have JavaScript enabled in order for this application to display correctly.
+      </div>
+    </noscript>
+    
+    <h1><a href="main" id="name">food hub</a></h1>
+    <div id=main>
+	    <div id="exploreDiv">
+	    	<p><a href="explore" id="explore_option">Explore popular <br> restaurants near you</a></p>
+	    </div>
+	    <div id="searchDiv">
+	    	<p><a href="search" id="search_option">Search for restaurants <br> by category or name</a></p>
+	    </div>
+	</div>
+
+	<div id="explore" style="width:100%; height:100%;>
+		<div id="explore_map"></div>
+		<div id="explore_panel">
+			<input id="explore_input" type="text" placeholder="Location">
+			<p id="explore_near_warning">Please enter a location (ie.
+				Vancouver, BC)</p>
+			<table id="explore_results">
+				<tr></tr>
+			</table>
+		</div>
+	</div>
+
+	<div id="search">
+		<div id="search_map"></div>
+		<div id="search_panel">
+			<input id="search_input_near" type="text" placeholder="Location"><br>
+			<p id="search_near_warning">Please enter a location (ie.
+				Vancouver, BC)</p>
+			<input id="search_input_query" type="text"
+				placeholder="Category or name">
+			<p id="query_warning">Please enter a category (ie. Donuts) or
+				name (ie. Taco Bell)</p>
+			<table id="search_results">
+				<tr></tr>
+			</table>
+		</div>
+	</div>
+
+	<!-- This script loads your compiled module. If you add any GWT meta tags, they must be added before this line. -->
+    <script type="text/javascript" language="javascript" src="foodhub/foodhub.nocache.js"></script>
+    
+    <!-- Link to the script that draws the maps and handles some user events -->
+	<script type="text/javascript" src="foodhub/webapp.js"></script>
+	
+	<!--  When the API is loaded synchronously ie. without the async tag and callback param, 
+	      subsequent script tags will not execute until the API is fully loaded.  -->
+	<script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+  </body>
+</html>

@@ -1,0 +1,122 @@
+package com.webapp.foodhub.client;
+
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyDownEvent;
+import com.google.gwt.event.dom.client.KeyDownHandler;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOutHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
+import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.maps.gwt.client.LatLng;
+
+public class DataDrawer {
+	
+	private FoodHubVenue[] venues;
+	private FlexTable table;
+	private ScrollPanel scrollPanel;
+	private ResizeController resizeController;
+	
+	public DataDrawer(FoodHubVenue[] venues) {
+		this.venues = venues;
+		resizeController = ResizeController.getInstance();
+	}
+	
+	public void drawExploreData() {
+		addDataToTable();
+		resizeController.setExploreResultsHeight(scrollPanel.getElement());
+		RootPanel.get("explore_results").add(scrollPanel);
+	}
+	
+	public void drawSearchData() {
+		addDataToTable();
+		resizeController.setSearchResultsHeight(scrollPanel.getElement());
+		RootPanel.get("search_results").add(scrollPanel);
+	}
+	
+	public void addDataToTable() {
+		int j = 0;
+		table = new FlexTable();
+		table.getElement().setId("results_table");
+		
+		for (int i=0; i < venues.length; i++) {
+			FoodHubVenue currVenue = venues[i];
+			final LatLng location = currVenue.getLatLong();
+			
+			// Link venue names back to corresponding FourSquare pages
+			final Anchor nameLink = new Anchor();
+			nameLink.setText(currVenue.getName());
+			nameLink.setHref("http://foursquare.com/v/" + currVenue.getId());
+			nameLink.setTarget("_blank");
+			nameLink.getElement().addClassName("restaurant_name");
+			
+			nameLink.addMouseOverHandler(new MouseOverHandler() {
+				@Override
+				public void onMouseOver(MouseOverEvent event) {
+					MapController.getInstance().triggerMarkerPopUp(nameLink.getText());
+				}
+			});
+			
+			nameLink.addMouseOutHandler(new MouseOutHandler() {
+				@Override
+				public void onMouseOut(MouseOutEvent event) {
+					MapController.getInstance().closeMarkerPopUp(nameLink.getText());
+				}
+			});
+			
+			table.setWidget(j,0, nameLink);
+			table.setText(j+1, 0, currVenue.getAddress());
+			
+			Anchor directionsLink = new Anchor();
+			directionsLink.setText("> Get directions");
+			directionsLink.setHref("#null");
+			directionsLink.getElement().addClassName("directions_link");
+			
+			final int originAddrRow = j+3;
+			
+			directionsLink.addClickHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					
+					Element existing_addr = Document.get().getElementById("textbox");
+					if (existing_addr != null) {
+						existing_addr.removeFromParent();
+					}
+					final TextBox origin = new TextBox();
+					origin.getElement().setId("textbox");
+					origin.getElement().setPropertyString("placeholder", "Starting address");
+					
+					origin.addKeyDownHandler(new KeyDownHandler() {
+						@Override
+						public void onKeyDown(KeyDownEvent event) {
+							if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+								MapController controller = MapController.getInstance();
+								
+								if (!origin.getValue().trim().isEmpty()) {
+									controller.clearMarkers();
+									controller.drawDirections(origin.getValue().trim(), location);
+								}
+								event.preventDefault();
+							}
+						}
+					});
+					table.setWidget(originAddrRow, 0, origin);
+					event.preventDefault();
+				}
+			});
+			
+			table.setWidget(j+2, 0, directionsLink);
+			j = j+4;
+		}
+		scrollPanel = new ScrollPanel(table);
+		scrollPanel.getElement().setId("scrollPanel");
+	}
+}

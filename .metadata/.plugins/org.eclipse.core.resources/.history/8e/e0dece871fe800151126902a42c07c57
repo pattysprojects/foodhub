@@ -1,0 +1,169 @@
+$main-color: #666666;
+$lighter-main: #999999;
+$darker-main: #595959;
+$anchor-color: #38759c;
+$black: #000000;
+$white: #ffffff;
+$red: #993333;
+$fade: 0.7;
+
+html {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  font-size: 24pt;
+  margin: 0;
+  padding: 0;
+  /** Make vertical scrollbar always visible so when scrollbar appears, won't shift everything left */
+  overflow-y: scroll;
+  display: table;
+  height: 100%;
+  width: 100%;
+}
+
+h1 {
+  font-size: 1.8em;
+  font-family: "Times New Roman";
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  word-spacing: 0.3em;
+  color: $black;
+  text-align: center;
+  margin: 0.5em 0 0 0;
+}
+
+p {
+  text-align: center;
+  font-family: "Gisha";
+}
+
+a {
+  text-decoration: none;
+  color: $black;
+
+  &:hover {
+    color: $black;
+  }
+}
+
+#main {
+  display: table-row;
+  height: 100%;
+  
+  p {
+    margin-top: 25%;
+  }
+}
+
+#options {
+  display: table-row;
+  height: 100%;
+  width: 100%;
+}
+
+@mixin main-options($side) {
+  height: 100%;
+  width: 50%;
+  float: $side;
+}
+
+#exploreDiv {
+  @include main-options(left);
+}
+
+#searchDiv {
+  @include main-options(right);
+}
+
+#explore {
+  display: block;
+  height: 90%;
+  width: 100%;
+  margin-top: 1em;
+}
+
+#search {
+  @extend #explore;
+}
+
+#explore_panel {
+  float: left;
+  height: 100%;
+  width: 25%;
+  
+  p {
+    font-size: 14px;
+    font-family: Arial;
+    text-align: left;
+    margin-left: 30px;
+  }
+}
+
+#search_panel {
+  @extend #explore_panel;
+}
+
+#results_table {
+  height: 95%;
+  width: 90%;
+  margin: 0 1em;
+  font-size: 18px;
+}
+
+#explore_map {
+  height: 95%;
+  width: 50%;
+  float: left;
+}
+
+#search_map {
+  @extend #explore_map;
+}
+
+#explore_dir_panel {
+  float: right;
+  height: 100%;
+  width: 25%;
+}
+
+#search_dir_panel {
+  @extend #explore_dir_panel;
+}
+
+#explore_input {
+  padding: 0.5em;
+  font-size: 0.5em;
+  width: 50%;
+  margin-left: 30px;
+}
+
+#search_input_near {
+  @extend #explore_input;
+}
+
+#search_input_query {
+  @extend #explore_input;
+  margin-top: 1em;
+}
+
+.query_button {
+  width: 30%;
+  font-size: 0.3em;
+  padding: 0.5em;
+}
+
+#explore_results {
+  overflow: auto;
+}
+
+#search_results {
+  @extend #explore_results;
+}
+
+#explore_near_warning, #search_near_warning, #query_warning {
+  display: none;
+  font-size: 14px;
+  color: $red;
+}

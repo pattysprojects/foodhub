@@ -1,0 +1,5 @@
+package com.webapp.foodhub.client;
+
+public class ResizeController {
+
+}

@@ -1,0 +1,252 @@
+package com.webapp.foodhub.client;
+
+import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.Style.Display;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyDownEvent;
+import com.google.gwt.event.dom.client.KeyDownHandler;
+import com.google.gwt.event.logical.shared.ResizeEvent;
+import com.google.gwt.event.logical.shared.ResizeHandler;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TextBox;
+/**
+ * Entry point classes define <code>onModuleLoad()</code>.
+ */
+public class FoodHub implements EntryPoint {
+	
+	// The explore or search options on the main page
+	private Anchor explore_option = Anchor.wrap(Document.get().getElementById("explore_option"));
+	private Anchor search_option = Anchor.wrap(Document.get().getElementById("search_option"));
+	private Anchor main_option = Anchor.wrap(Document.get().getElementById("main_option"));
+	
+	// The name, explore and search header links
+	private Anchor name_link = Anchor.wrap(Document.get().getElementById("name_page"));
+	private Anchor explore_link = Anchor.wrap(Document.get().getElementById("explore_page"));
+	private Anchor search_link = Anchor.wrap(Document.get().getElementById("search_page"));
+	
+	// The user input elements
+	private TextBox explore_input = TextBox.wrap(Document.get().getElementById("explore_input"));
+	private TextBox search_input_near = TextBox.wrap(Document.get().getElementById("search_input_near"));
+	private TextBox search_input_query = TextBox.wrap(Document.get().getElementById("search_input_query"));
+	private Button explore_button = Button.wrap(Document.get().getElementById("explore_button"));
+	private Button search_button = Button.wrap(Document.get().getElementById("search_button"));
+	
+	// The user input warning labels
+	private Element explore_warning = Document.get().getElementById("explore_near_warning");
+	private Element query_warning = Document.get().getElementById("query_warning");
+	private Element near_warning = Document.get().getElementById("search_near_warning");
+	
+	// The Foursquare request warning labels
+	private Element search_req_warning = Document.get().getElementById("search_req_warning");
+	private Element explore_req_warning = Document.get().getElementById("explore_req_warning");
+	
+	private DataFetcher fetcher;
+	private MapController mapController = MapController.getInstance();
+	private ResizeController resizeController = ResizeController.getInstance();
+	
+	public void onModuleLoad() {
+		
+		main_option.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				event.preventDefault();
+			}
+		});
+		
+		explore_option.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				hideMainPage();
+				showExplorePage();
+				event.preventDefault();
+			}
+		});
+		
+		search_option.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				hideMainPage();
+				showSearchPage();
+				event.preventDefault();
+			}
+		});
+		
+		name_link.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				showMainPage();
+				event.preventDefault();
+			}	
+		});
+		
+		explore_link.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				showExplorePage();
+				event.preventDefault();
+			}
+		});
+		
+		search_link.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				showSearchPage();
+				event.preventDefault();
+			}
+		});
+		
+		explore_input.addKeyDownHandler(new KeyDownHandler() {
+			public void onKeyDown(KeyDownEvent event) {
+				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+					handleExploreInput();
+				}
+			}
+		});
+		
+		explore_button.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				handleExploreInput();
+				event.preventDefault();
+			}
+		});
+		
+		search_input_query.addKeyDownHandler(new KeyDownHandler() {
+			public void onKeyDown(KeyDownEvent event) {
+				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+					handleSearchInput();
+				}
+			}
+		});
+		
+		search_button.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				handleSearchInput();
+				event.preventDefault();
+			}
+		});
+		
+		Window.addResizeHandler(new ResizeHandler() {
+			@Override
+			public void onResize(ResizeEvent event) {
+				if (explore_input.isVisible()) {
+					resizeController.adjustExploreView();
+				} else if (search_input_query.isVisible()) {
+					resizeController.adjustSearchView();
+				}
+			}	
+		});
+	}
+	
+	private void handleExploreInput() {
+		setDisplayNone(explore_warning);
+		setDisplayNone(explore_req_warning);
+		
+		RootPanel.get("explore_results").clear();
+		mapController.clearDirections();
+		mapController.clearMarkers();
+		
+		String near = explore_input.getText().trim();
+		
+		if (!near.isEmpty()) {
+			fetcher = new DataFetcher(near);
+			fetcher.fetchExploreData();
+		} else {
+			setDisplayInline(explore_warning);
+		}
+	}
+	
+	private void handleSearchInput() {
+		setDisplayNone(query_warning);
+		setDisplayNone(near_warning);
+		setDisplayNone(search_req_warning);
+		
+		RootPanel.get("search_results").clear();
+		mapController.clearDirections();
+		mapController.clearMarkers();
+		
+		String near = search_input_near.getText().trim();
+		String query = search_input_query.getText().trim();
+		
+		if (!near.isEmpty()) {
+			if (query.isEmpty()) {
+				setDisplayInline(query_warning);
+			} else {
+				fetcher = new DataFetcher(near, query);
+				fetcher.fetchSearchData();
+			}
+		} else {
+			setDisplayInline(near_warning);
+		}
+	}
+	
+	public void showMainPage() {
+		setDisplayRow(Document.get().getElementById("main"));
+		setDisplayNone(Document.get().getElementById("header"));
+		// Hiding the parent div "options" also hides the children
+		setDisplayNone(Document.get().getElementById("options_container"));		
+	}
+	
+	public void hideMainPage() {
+		setDisplayNone(Document.get().getElementById("main"));
+		setDisplayBlock(Document.get().getElementById("header"));
+		setDisplayRow(Document.get().getElementById("options_container"));
+	}
+	
+	public void showExplorePage() {
+		setDisplayBlock(Document.get().getElementById("explore"));
+		setDisplayNone(Document.get().getElementById("search"));
+		Document.get().getElementById("explore_page").addClassName("currTab");
+		Document.get().getElementById("search_page").removeClassName("currTab");
+		clearExploreResultsTable();
+		mapController.drawExploreMap();
+	}
+	
+	public void showSearchPage() {
+		setDisplayBlock(Document.get().getElementById("search"));
+		setDisplayNone(Document.get().getElementById("explore"));
+		Document.get().getElementById("search_page").addClassName("currTab");
+		Document.get().getElementById("explore_page").removeClassName("currTab");
+		clearSearchResultsTable();
+		mapController.drawSearchMap();
+	}
+
+	public void clearExploreResultsTable() {
+		RootPanel.get("explore_results").clear();
+		setDisplayNone(explore_warning);
+		setDisplayNone(explore_req_warning);
+		explore_input.setText("");
+	}
+	
+	public void clearSearchResultsTable() {
+		RootPanel.get("search_results").clear();
+		setDisplayNone(query_warning);
+		setDisplayNone(near_warning);
+		setDisplayNone(search_req_warning);
+		search_input_near.setText("");
+		search_input_query.setText("");
+	}
+	
+	public void setDisplayNone(Element e) {
+		e.getStyle().setDisplay(Display.NONE);
+	}
+	
+	public void setDisplayBlock(Element e) {
+		e.getStyle().setDisplay(Display.BLOCK);
+	}
+	
+	public void setDisplayRow(Element e) {
+		e.getStyle().setDisplay(Display.TABLE_ROW);
+	}
+	
+	public void setDisplayInline(Element e) {
+		e.getStyle().setDisplay(Display.INLINE);
+	}
+}

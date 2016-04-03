@@ -1,0 +1,18 @@
+package com.webapp.foodhub.client;
+
+public class ResizeController {
+	
+	private static ResizeController controller;
+	
+	private ResizeController() {
+		
+	}
+	
+	public static ResizeController getInstance() {
+		if (controller == null) {
+			controller = new ResizeController();
+		}
+		return controller;
+	}
+
+}

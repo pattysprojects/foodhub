@@ -1,0 +1,301 @@
+$main-color: #666666;
+$lighter-main: #999999;
+$darker-main: #595959;
+$anchor-color: #38759c;
+$black: #000000;
+$white: #ffffff;
+$red: #993333;
+$fade: 0.7;
+
+@font-face {
+  font-family: "Icomoon";
+  src: url("../fonts/icomoon.woff");
+}
+
+html {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  font-size: 24pt;
+  margin: 0;
+  padding: 0;
+  /** Make vertical scrollbar always visible so when scrollbar appears, won't shift everything left */
+  overflow-y: scroll;
+  display: table;
+  height: 100%;
+  width: 100%;
+}
+
+h1 {
+  font-family: Gisha;
+  color: $black;
+  word-spacing: 8px;
+  letter-spacing: 5px;
+  position: fixed;
+  z-index: 2;
+  left: 50%;
+  transform: translate(-50%);
+  text-transform: uppercase;
+}
+
+p {
+  text-align: center;
+  font-family: "Gisha";
+}
+
+a {
+  text-decoration: none;
+  color: $black;
+
+  &:hover {
+    color: $black;
+  }
+}
+
+#main {
+  height: 100%;
+  display: table-row;
+  position: relative;
+  text-align: center;
+  
+  img {
+    position: absolute;
+    z-index: -1;
+    top: 2%;
+    left: 1%;
+    height: 96%;
+    width: 98%;
+  }
+  
+  #attribution {
+    position: absolute;
+    bottom: 2%;
+    left: 50%;
+    transform: translate(-50%);
+    font-size: 0.6em;
+    line-height: 200%;
+  }
+}
+
+#icons {
+  font-family: "Icomoon";
+  font-size: 1em;
+  letter-spacing: 0.3em;
+}
+
+/**
+Have two divs side by side, each taking up half of parent container
+Dividing a container into two vertical halves
+
+@mixin main-options($side) {
+  position: relative;
+  height: 100%;
+  width: 50%;
+  float: $side;
+}
+
+#exploreDiv {
+  @include main-options(left);
+}
+
+#searchDiv {
+  @include main-options(right);
+}
+**/
+
+#options {
+  position: absolute;
+  top: 47%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  line-height: 200%;
+  margin: 0;
+  background-color: #f5f5f5;
+  width: 100%;
+  padding: 5% 0;
+  z-index: 1;
+}
+
+#explore_option {
+  &:hover {
+    &::before {
+      font-family: "Icomoon";
+      font-size: 0.8em;
+      content: "a ";
+    }
+  }
+}
+
+#search_option {
+  @extend #explore_option;
+}
+
+#options_container {
+  display: none;
+  height: 100%;
+  width: 100%;
+}
+
+#header {
+  display: none;
+  margin-top: 1em;
+  
+  a {
+    font-size: 0.8em;
+    font-family: Arial Narrow;
+    margin-right: 1em;
+    color: $lighter-main;
+    
+    &.currTab {
+      color: $darker-main;
+      border-bottom: 2px;
+      border-bottom-style: solid;
+      padding-bottom: 2px;
+    }
+    
+    &:hover {
+      color: $darker-main;
+      border-bottom: 2px;
+      border-bottom-style: solid;
+      padding-bottom: 2px;
+    }
+  }
+  
+  #name_page {
+    color: $darker-main;
+    font-size: 1em;
+    font-family: Gisha;
+    margin-left: 30px;
+  }
+}
+
+/** When a CSS property shows as struck-through, 
+it means that the crossed-out style was applied, 
+but then overridden by a more specific selector, 
+a more local rule, or by a later property within 
+the same rule. The styling below is not as
+specific as the one above so it will be
+overridden.
+
+.currTab {
+  color: $black;
+}**/
+
+#explore {
+  display: block;
+  height: 90%;
+  width: 100%;
+  margin-top: 30px;
+}
+
+#search {
+  @extend #explore;
+}
+
+#explore_panel {
+  float: left;
+  height: 100%;
+  width: 23%;
+  
+  p {
+    font-size: 14px;
+    font-family: Arial;
+    text-align: left;
+    margin-left: 10%;
+  }
+}
+
+#search_panel {
+  @extend #explore_panel;
+}
+
+#explore_input {
+  padding: 2.5%;
+  font-size: 50%;
+  width: 50%;
+  margin-left: 10%;
+}
+
+#search_input_near {
+  @extend #explore_input;
+}
+
+#search_input_query {
+  @extend #explore_input;
+  margin-top: 1em;
+}
+
+.query_button {
+  width: 25%;
+  font-size: 50%;
+  padding: 2.5%;
+}
+
+#explore_near_warning, #search_near_warning, 
+#query_warning, #search_req_warning, #explore_req_warning  {
+  display: none;
+  font-size: 14px;
+  color: $red;
+}
+
+#scrollPanel {
+  margin-top: 25px;
+}
+
+#results_table {
+  margin-left: 10%;
+  font-size: 50%;
+  font-family: Gisha;
+  color: $main-color;
+}
+
+.restaurant_name {
+  font-size: 105%;
+}
+
+.directions_link {
+  color: $main-color;
+}
+
+#textbox {
+  padding: 5pt;
+  width: 85%;
+  margin: 5pt 0;
+  font-family: Gisha;
+  font-size: 102%;
+}
+
+#explore_map {
+  height: 98%;
+  width: 50%;
+  float: left;
+  margin: 1% 0 1% 2%;
+}
+
+#search_map {
+  @extend #explore_map;
+}
+
+#explore_dir_panel {
+  float: left;
+  width: 24%;
+  margin: 1% 1% 0 0;
+  font-size: 10pt;
+  overflow: auto;
+  
+  div.adp {
+    padding: 0pt 10pt 10pt 10pt;
+    font-family: Gisha;
+    font-size: 110%;
+    
+    .adp-placemark {
+      margin-top: 2px;
+    }
+  } 
+}
+
+#search_dir_panel {
+  @extend #explore_dir_panel;
+}

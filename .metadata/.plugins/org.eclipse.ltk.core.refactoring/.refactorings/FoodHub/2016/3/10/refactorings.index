@@ -1,0 +1,17 @@
+1457124953116	Rename type 'QuickEats'
+1457124986343	Rename package 'com.webapp.quickeats'
+1457125088605	Rename package 'com.webapp.quickeats.client'
+1457128719646	Rename resource 'QuickEats.html'
+1457128726934	Rename resource 'QuickEats.css'
+1457128740679	Rename package 'com.webapp.quickeats.server'
+1457128752643	Rename package 'com.webapp.quickeats.shared'
+1457129711987	Rename resource 'quickeats'
+1457129722200	Rename resource 'quickeats.nocache.js'
+1457130766251	Rename resource 'QuickEats.gwt.xml'
+1457136288962	Delete element
+1457136297037	Delete element
+1457139241752	Rename resource 'FoodHub.gwt.xml'
+1457139391090	Rename resource 'QuickEats.gwt.xml'
+1457139493577	Rename resource 'quickeats.devmode.js'
+1457216974582	Rename package 'com.webapp.quickeats'
+1457216986216	Rename package 'com.webapp.foodhub'

@@ -1,0 +1,96 @@
+package com.webapp.foodhub.client;
+
+import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.Style.Display;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyDownEvent;
+import com.google.gwt.event.dom.client.KeyDownHandler;
+import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.maps.gwt.client.GoogleMap;
+import com.google.maps.gwt.client.LatLng;
+import com.google.maps.gwt.client.MapOptions;
+
+/**
+ * Entry point classes define <code>onModuleLoad()</code>.
+ */
+public class FoodHub implements EntryPoint {
+	
+	private DataFetcher fetcher;
+	private TextBox explore_input = TextBox.wrap(Document.get().getElementById("explore_input"));
+	private TextBox search_input_near = TextBox.wrap(Document.get().getElementById("search_input_near"));
+	private TextBox search_input_query = TextBox.wrap(Document.get().getElementById("search_input_query"));
+	
+	// private Anchor explore_link = Anchor.wrap(Document.get().getElementById("explore_option"));
+	// private Anchor search_link = Anchor.wrap(Document.get().getElementById("search_option"));
+	private Anchor name_link = Anchor.wrap(Document.get().getElementById("name"));
+	
+	public void onModuleLoad() {
+		
+		MapOptions options  = MapOptions.create() ;
+
+		options.setCenter(LatLng.create(49.886083, -97.152921));   
+		options.setZoom(4);
+		options.setDraggable(true);
+		options.setMapTypeControl(true);
+		options.setScaleControl(true);
+		options.setScrollwheel(true);
+
+		SimplePanel widg = new SimplePanel();
+		widg.setSize("100%","100%");
+
+		GoogleMap theMap = GoogleMap.create(widg.getElement(), options);
+		RootPanel.get("explore_map").add(widg);
+
+		name_link.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				if (fetcher != null) {
+					fetcher.clearData();
+					explore_input.setText("");
+					search_input_near.setText("");
+					search_input_query.setText("");
+				}
+			}	
+		});
+		
+		explore_input.addKeyDownHandler(new KeyDownHandler() {
+			public void onKeyDown(KeyDownEvent event) {
+				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+					String near = explore_input.getText().trim();
+					if (!near.isEmpty()) {
+						fetcher = new DataFetcher(near);
+						fetcher.fetchExploreData();
+					} else {
+						Document.get().getElementById("explore_near_warning").getStyle().setDisplay(Display.INLINE);
+					}
+				}
+			}
+		});
+		
+		search_input_near.addKeyDownHandler(new KeyDownHandler() {
+			public void onKeyDown(KeyDownEvent event) {
+				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+					String near = search_input_near.getText().trim();
+					String query = search_input_query.getText().trim();
+					if (!near.isEmpty()) {
+						if (query.isEmpty()) {
+							Document.get().getElementById("query_warning").getStyle().setDisplay(Display.INLINE);
+						} else {
+							fetcher = new DataFetcher(near, query);
+							fetcher.fetchSearchData();
+						}
+					} else {
+						Document.get().getElementById("search_near_warning").getStyle().setDisplay(Display.INLINE);
+					}
+				}
+			}
+		});
+		
+	}
+}

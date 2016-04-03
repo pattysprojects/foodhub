@@ -1,0 +1,28 @@
+package com.webapp.foodhub.client;
+
+import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyDownEvent;
+import com.google.gwt.event.dom.client.KeyDownHandler;
+import com.google.gwt.user.client.ui.TextBox;
+
+/**
+ * Entry point classes define <code>onModuleLoad()</code>.
+ */
+public class FoodHub implements EntryPoint {
+	
+	public void onModuleLoad() {
+		TextBox explore_input = TextBox.wrap(Document.get().getElementById("#explore_input"));
+		explore_input.addKeyDownHandler(new KeyDownHandler() {
+			public void onKeyDown(KeyDownEvent event) {
+				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+					if (!explore_input.getText().trim().isEmpty()) {
+						
+					}
+				}
+			}
+		});
+		
+	}
+}
