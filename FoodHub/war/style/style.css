@@ -69,7 +69,7 @@ a:hover {
 #icons {
   font-family: "Icomoon";
   font-size: 1em;
-  letter-spacing: 0.3em;
+  letter-spacing: 0.2em;
 }
 
 /**
@@ -101,6 +101,9 @@ Dividing a container into two vertical halves
   width: 100%;
   padding: 5% 0;
   z-index: 1;
+  font-family: Arial;
+  font-size: 30px;
+  letter-spacing: 1px;
 }
 
 #explore_option:hover::before, #search_option:hover::before {
@@ -120,10 +123,11 @@ Dividing a container into two vertical halves
   margin-top: 1em;
 }
 #header a {
-  font-size: 0.8em;
-  font-family: Arial Narrow;
-  margin-right: 1em;
+  font-size: 25px;
+  font-family: Arial;
+  margin-right: 1.5em;
   color: #999999;
+  letter-spacing: 1px;
 }
 #header a.currTab {
   color: #595959;
@@ -138,9 +142,6 @@ Dividing a container into two vertical halves
   padding-bottom: 2px;
 }
 #header #name_page {
-  color: #595959;
-  font-size: 1em;
-  font-family: Calibri;
   margin-left: 30px;
 }
 
@@ -206,8 +207,8 @@ overridden.
 
 #results_table {
   margin-left: 10%;
-  font-size: 50%;
-  font-family: Calibri;
+  font-size: 48%;
+  font-family: Arial;
   color: #666666;
 }
 
@@ -223,8 +224,8 @@ overridden.
   padding: 5pt;
   width: 85%;
   margin: 5pt 0;
-  font-family: Calibri;
-  font-size: 102%;
+  font-family: Arial;
+  font-size: 100%;
 }
 
 #explore_map, #search_map {
@@ -242,7 +243,7 @@ overridden.
 }
 #explore_dir_panel div.adp, #search_dir_panel div.adp {
   padding: 0pt 10pt 10pt 10pt;
-  font-family: Calibri;
+  font-family: Arial;
   font-size: 110%;
 }
 #explore_dir_panel div.adp .adp-placemark, #search_dir_panel div.adp .adp-placemark {
