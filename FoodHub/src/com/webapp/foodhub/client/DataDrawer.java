@@ -115,7 +115,9 @@ public class DataDrawer {
 			});
 			
 			table.setWidget(j+2, 0, directionsLink);
-			j = j+4;
+			// Add an empty row between search results
+			table.getCellFormatter().addStyleName(j+4, 0, "emptyRow");
+			j = j+5;
 		}
 		scrollPanel = new ScrollPanel(table);
 		scrollPanel.getElement().setId("scrollPanel");

@@ -150,8 +150,7 @@ public class FoodHub implements EntryPoint {
 		setDisplayNone(explore_req_warning);
 		
 		RootPanel.get("explore_results").clear();
-		mapController.clearDirections();
-		mapController.clearMarkers();
+		mapController.resetMap();
 		
 		String near = explore_input.getText().trim();
 		
@@ -169,8 +168,7 @@ public class FoodHub implements EntryPoint {
 		setDisplayNone(search_req_warning);
 		
 		RootPanel.get("search_results").clear();
-		mapController.clearDirections();
-		mapController.clearMarkers();
+		mapController.resetMap();
 		
 		String near = search_input_near.getText().trim();
 		String query = search_input_query.getText().trim();

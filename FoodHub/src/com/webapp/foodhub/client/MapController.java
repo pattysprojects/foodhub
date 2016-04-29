@@ -28,6 +28,7 @@ public class MapController {
 	
 	private GoogleMap map;
 	private Element directions_panel;
+	private Element map_panel;
 	private ArrayList<Marker> markers = new ArrayList<Marker>();
 	private ArrayList<InfoWindow> popUps = new ArrayList<InfoWindow>();
 	
@@ -50,19 +51,26 @@ public class MapController {
 	}
 	
 	public void drawExploreMap() {
-		Element explore_map = Document.get().getElementById("explore_map");
-		resizeController.setMapHeight(explore_map);
-		map = GoogleMap.create(explore_map, mapOptions);
+		map_panel = Document.get().getElementById("explore_map");
 		directions_panel = Document.get().getElementById("explore_dir_panel");
-		clearDirections();
+		resizeController.setMapHeight(map_panel);
+		drawMap();
 	}
 	
 	public void drawSearchMap() {
-		Element search_map = Document.get().getElementById("search_map");
-		resizeController.setMapHeight(search_map);
-		map = GoogleMap.create(Document.get().getElementById("search_map"), mapOptions);
+		map_panel = Document.get().getElementById("search_map");
 		directions_panel = Document.get().getElementById("search_dir_panel");
-		clearDirections();
+		resizeController.setMapHeight(map_panel);
+		drawMap();
+	}
+	
+	public void drawMap() {
+		ResizeController resizeController = ResizeController.getInstance();
+		resizeController.resetMapAndDirWidth(map_panel, directions_panel);
+		
+		// Need to create the map again after resizing otherwise map is still its previous size
+		// while the container size has changed
+		map = GoogleMap.create(map_panel, mapOptions);
 	}
 	
 	public void drawMarkers(FoodHubVenue[] venues) {
@@ -92,7 +100,7 @@ public class MapController {
 				}	
 			});
 		}
-		resize();
+		fitBounds();
 	}
 	
 	public void triggerMarkerPopUp(String name) {
@@ -124,7 +132,7 @@ public class MapController {
 		this.popUps.clear();
 	}
 	
-	public void resize() {
+	public void fitBounds() {
 		LatLngBounds bounds = LatLngBounds.create();
 		for (Marker marker: this.markers) {
 			// Extends the bounds to include the given LatLng coordinate
@@ -133,9 +141,27 @@ public class MapController {
 		map.fitBounds(bounds);
 	}
 	
+	// This function is called when 
+	public void resetMap() {
+		
+		// Don't need to create a new map or resize it if containers didn't change size
+		// Just need to clear the markers
+		clearMarkers();
+		
+		if (directions_panel.getOffsetWidth() != 0) {
+			clearDirections();
+			drawMap();
+		}
+	}
+	
 	public void drawDirections(String origin, LatLng destination) {
 		ResizeController resizeController = ResizeController.getInstance();
 		resizeController.setDirectionsPanelHeight(directions_panel);
+		
+		if (directions_panel.getOffsetWidth() == 0) {
+			resizeController.setMapAndDirWidth(map_panel, directions_panel);
+			map = GoogleMap.create(map_panel, mapOptions);
+		}
 		
 		if (renderer != null) {
 			clearDirections();
@@ -169,5 +195,4 @@ public class MapController {
 			}
 		}
 	}
-
 }
