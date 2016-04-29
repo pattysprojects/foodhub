@@ -41,13 +41,13 @@ public class ResizeController {
 	
 	public void setDirectionsPanelHeight(Element directions_panel) {
 		browserHeight = Window.getClientHeight();
-		double panelTop = Document.get().getElementById("options_container").getAbsoluteTop() + 70;
+		double panelTop = Document.get().getElementById("options_container").getAbsoluteTop() + 60;
 		directions_panel.getStyle().setHeight((browserHeight - panelTop), Style.Unit.PX);
 	}
 	
 	public void setMapHeight(Element mapContainer) {
 		browserHeight = Window.getClientHeight();
-		double panelTop = Document.get().getElementById("options_container").getAbsoluteTop() + 70;
+		double panelTop = Document.get().getElementById("options_container").getAbsoluteTop() + 60;
 		mapContainer.getStyle().setHeight((browserHeight - panelTop), Style.Unit.PX);
 	}
 	
@@ -67,6 +67,16 @@ public class ResizeController {
 		setDirectionsPanelHeight(dir_panel);
 		Element search_map = Document.get().getElementById("search_map");
 		setMapHeight(search_map);
+	}
+	
+	public void setMapAndDirWidth(Element mapContainer, Element directions_panel) {
+		mapContainer.getStyle().setWidth(50, Style.Unit.PCT);
+		directions_panel.getStyle().setWidth(24, Style.Unit.PCT);
+	}
+	
+	public void resetMapAndDirWidth(Element mapContainer, Element directions_panel) {
+		mapContainer.getStyle().setWidth(74, Style.Unit.PCT);
+		directions_panel.getStyle().setWidth(0, Style.Unit.PCT);
 	}
 
 }
