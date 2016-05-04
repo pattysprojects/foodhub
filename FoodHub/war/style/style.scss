@@ -33,10 +33,9 @@ h1 {
   color: $black;
   word-spacing: 8px;
   letter-spacing: 5px;
-  position: fixed;
+  text-align: center;
+  /** z-index only works on positioned elements **/
   z-index: 2;
-  left: 50%;
-  transform: translate(-50%);
   text-transform: uppercase;
 }
 
@@ -59,30 +58,6 @@ a {
   display: table-row;
   position: relative;
   text-align: center;
-  
-  img {
-    position: absolute;
-    z-index: -1;
-    top: 2%;
-    left: 1%;
-    height: 96%;
-    width: 98%;
-  }
-  
-  #attribution {
-    position: absolute;
-    bottom: 2%;
-    left: 50%;
-    transform: translate(-50%);
-    font-size: 0.6em;
-    line-height: 200%;
-  }
-}
-
-#icons {
-  font-family: "Icomoon";
-  font-size: 1em;
-  letter-spacing: 0.2em;
 }
 
 /**
@@ -106,18 +81,72 @@ Dividing a container into two vertical halves
 **/
 
 #options {
-  position: absolute;
-  top: 47%;
-  transform: translateY(-50%);
   line-height: 200%;
-  margin: 0;
+  margin: 5% 0 4% 0;
   background-color: #f5f5f5;
   width: 100%;
   padding: 5% 0;
-  z-index: 1;
   font-family: Arial;
-  font-size: 30px;
+  font-size: 1em;
   letter-spacing: 1px;
+}
+
+@media screen and (max-width: 850px) {
+  h1 {
+    font-size: 8vw;
+  }
+  
+  #options {
+  	font-size: 3.5vw;
+  	margin-top: 8%;
+  }
+  
+  footer {
+    font-size: 4vw;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  #options {
+    margin-top: 10%;
+    padding: 10% 0;
+  }
+  
+  footer {
+    font-size: 0.8em;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  #options {
+  	margin-top: 15%;
+  	padding: 15% 0;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  #options {
+    margin-top: 20%;
+    padding: 20% 0;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  #options {
+  	margin-top: 25%;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  h1 {
+    font-size: 1em;
+  }
+  
+  #options {
+    margin-top: 35%;
+    font-size: 0.4em;
+  	padding: 25% 0;
+  }
 }
 
 #explore_option {
@@ -303,4 +332,18 @@ overridden.
 
 #search_dir_panel {
   @extend #explore_dir_panel;
+}
+
+footer {
+  p {
+    text-align: center;
+    font-size: 0.6em;
+    line-height: 200%;
+    
+    span {
+      font-family: "Icomoon";
+      font-size: 1em;
+      letter-spacing: 0.2em;
+    }
+  }
 }
