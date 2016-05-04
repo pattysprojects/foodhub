@@ -187,6 +187,7 @@ public class FoodHub implements EntryPoint {
 	
 	public void showMainPage() {
 		setDisplayRow(Document.get().getElementById("main"));
+		setDisplayBlock(Document.get().getElementById("footer"));
 		setDisplayNone(Document.get().getElementById("header"));
 		// Hiding the parent div "options" also hides the children
 		setDisplayNone(Document.get().getElementById("options_container"));
@@ -196,6 +197,7 @@ public class FoodHub implements EntryPoint {
 	
 	public void hideMainPage() {
 		setDisplayNone(Document.get().getElementById("main"));
+		setDisplayNone(Document.get().getElementById("footer"));
 		setDisplayBlock(Document.get().getElementById("header"));
 		setDisplayRow(Document.get().getElementById("options_container"));
 	}
