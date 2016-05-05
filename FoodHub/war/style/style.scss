@@ -91,6 +91,13 @@ Dividing a container into two vertical halves
   letter-spacing: 1px;
 }
 
+@media screen and (max-width: 1200px) {
+  .query_button {
+    margin-left: 10%;
+    margin-top: 1em;
+  }
+}
+
 @media screen and (max-width: 850px) {
   h1 {
     font-size: 8vw;
